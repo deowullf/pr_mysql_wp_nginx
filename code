@@ -1,0 +1,53 @@
+# Use deowullf/Andrey159753 as user/password credentials
+version: '3'
+services:
+	db:
+		image: mysql
+		command: --default-authentication-plugin=mysql_native_password
+		container_name: mysql_db1
+		restart: always
+		ports:
+			- 8080:8080
+			- 1234:1234
+			- 5432:5432
+		volumes:
+			- D:\docker\first_task\1
+			- db_data:/var/lib/mysql
+		environment:
+      			MYSQL_ROOT_PASSWORD: Andrey159753
+      			MYSQL_DATABASE: db1
+      			MYSQL_USER: us1
+      			MYSQL_PASSWORD: Pass
+		adminer:
+    			image: adminer
+    			restart: always
+										
+server{
+	listen 1234;
+	server_name nginx1;
+
+	location / {
+		proxy_pass	 Http://application;
+		proxy_set_header host		$host;
+		proxy_set_header X-real-IP	$remote_addr;
+	}
+}
+
+		wordpress:
+    	depends_on:
+				- db
+    	image: wordpress:latest
+    volumes:
+      	- wordpress_data:/var/www/html
+    ports:
+      	- "8080:8080"
+    restart: always
+    environment:
+      		WORDPRESS_DB_HOST: db:3306
+      		WORDPRESS_DB_USER: us1
+      		WORDPRESS_DB_PASSWORD: Pass
+      		WORDPRESS_DB_NAME: db1
+		
+		volumes:
+  				db_data: {}
+  				wordpress_data: {}
