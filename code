@@ -51,3 +51,4 @@ server{
 		volumes:
   				db_data: {}
   				wordpress_data: {}
+				
